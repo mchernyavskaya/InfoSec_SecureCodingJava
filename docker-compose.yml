@@ -8,6 +8,8 @@ services:
     environment:
       - MYSQL_DATABASE=users
       - MYSQL_ROOT_PASSWORD=root
+    volumes:
+        - ./sql/db_users.sql:/docker-entrypoint-initdb.d/db_users.sql
 
 
 

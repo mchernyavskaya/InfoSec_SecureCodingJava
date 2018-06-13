@@ -78,11 +78,12 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <path>/</path>
+                    <path>/ExamResults</path>
                     <server>tomcat-development-server</server>
                     <port>9966</port>
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>ExamResults</finalName>
     </build>
 </project>
