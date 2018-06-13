@@ -63,7 +63,7 @@ public class VerifyResults extends HttpServlet {
 			// String webInfPath = myClass.getAbsolutePath().replaceAll("%20", " ") + File.separator;
 			 System.out.println(webInfPath);
 		 
-			 File file = new File(webInfPath+"/admin/Results.xml");
+			 File file = new File(webInfPath+"/WEB-INF/res/Results.xml");
 			 System.out.println(file);
              DocumentBuilderFactory dBFactory = DocumentBuilderFactory.newInstance();
              DocumentBuilder dBuilder = dBFactory.newDocumentBuilder();
