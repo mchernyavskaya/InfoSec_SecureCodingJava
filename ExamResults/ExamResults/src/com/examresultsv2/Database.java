@@ -1,23 +1,19 @@
-package com.examresults;
+package com.examresultsv2;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import javax.servlet.ServletResponse;
-import javax.servlet.ServletResponseWrapper;
-import javax.servlet.http.HttpServletResponse;
 
 public class Database {
 
 	private Connection connection = null;	    
     private ResultSet resultSet = null;
-    private Statement statement = null;
+    private PreparedStatement preparedstatement = null;
    
     
 	public boolean openConnection() {
@@ -28,7 +24,7 @@ public class Database {
 			
 			//Load MySQL Driver
 			Class.forName("com.mysql.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/users?serverTimezone=UTC","root","toor");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/secure_users?serverTimezone=UTC","root","toor");
 			flag = true;
 			
 		} catch (ClassNotFoundException e) {
@@ -36,7 +32,7 @@ public class Database {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();			
+			e.printStackTrace();
 		}
 		return flag;
 		
@@ -58,30 +54,33 @@ public class Database {
 		
 	}
 	
- 
-	public boolean checkLogin(String username, String password) throws IOException {
+	public boolean checkLogin(String username, String password) {
 
 		boolean flag = false;
 		
 		try {
-			statement = connection.createStatement();
-			String query = "SELECT * FROM users where username='"+username+"' AND password='"+password+"'";
-		    resultSet = statement.executeQuery(query);
-		    
-		    if(resultSet.next()) {
-		    	flag = true;
+			String passwordhash = null;
+			String query = "SELECT password FROM users where username=?";
+			preparedstatement = connection.prepareStatement(query);
+			preparedstatement.setString(1,username);
+			resultSet = preparedstatement.executeQuery();
+		    resultSet.last(); 
+			passwordhash = resultSet.getString("password");		    
+		    if(passwordhash != null) {
+		     
+		    	if(BCrypt.checkpw(password, passwordhash)) {
+		    		
+		    		flag = true;
+		    	}
+		    	else {
+		    		flag = false;
+		    	}
 		    }
+		    
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			
-			StringWriter stringWriter = new StringWriter();
-            PrintWriter printWriter = new PrintWriter(stringWriter);
-            e.printStackTrace(printWriter);
-            ServletResponse response = null;
-            response.setContentType("text/plain");
-            response.getOutputStream().print(stringWriter.toString());     
-            
 		}
 	      
 		return flag;		
@@ -92,13 +91,24 @@ public class Database {
 		boolean flag = false;
 		
 		try {
-			statement = connection.createStatement();
-			String query = "SELECT * FROM admin where username='"+username+"' AND password='"+password+"'";
-		    resultSet = statement.executeQuery(query);
-		    
-		    if(resultSet.next()) {
-		    	flag = true;
-		    }
+			String passwordhash = null;
+			String query = "SELECT password FROM admin where username=?";
+			preparedstatement = connection.prepareStatement(query);
+			preparedstatement.setString(1,username);			 
+			resultSet = preparedstatement.executeQuery();
+			resultSet.last(); 
+				passwordhash = resultSet.getString("password");		    
+			    if(passwordhash != null) {
+			     
+			    	if(BCrypt.checkpw(password, passwordhash)) {
+			    		
+			    		flag = true;
+			    	}
+			    	else {
+			    		flag = false;
+			    	}
+			    }
+		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,4 +1,4 @@
-package com.examresults;
+package com.examresultsv2;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -57,7 +58,19 @@ public class GetResults extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		HttpSession session = request.getSession(false);
+		  if (session == null) {
+				request.setAttribute("examresult","Invalid Session");
+				RequestDispatcher rd=request.getRequestDispatcher("/index.jsp");            
+				rd.include(request, response);
+		  }
+		  else {
+			  
+		  
 		String studentid = request.getParameter("studentid");
+		
+		String regex = "\\d+";	
 		
 		if(studentid.isEmpty()) {
 			
@@ -68,20 +81,21 @@ public class GetResults extends HttpServlet {
 		
 		}
 		else {			
-	
+	   
+			if(studentid.matches(regex)) {
 		try{
-
-
-			 String pathTofile = "";
+             String pathTofile = "/home/infosec/examresults_uploads/";
 			 
-			 pathTofile = getServletContext().getRealPath("/");
-			 pathTofile = pathTofile+"admin";
+			// pathTofile = getServletContext().getRealPath("/");
+			// pathTofile = pathTofile+"admin/uploads";
 			 
 			 File file = new File(pathTofile+"/Results.xml");
 			 System.out.println(file);
             DocumentBuilderFactory dBFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dBFactory.newDocumentBuilder();
             Document xmldoc = dBuilder.parse(file);
+            
+            
             
             XPath xPath = XPathFactory.newInstance().newXPath();
             
@@ -112,7 +126,7 @@ public class GetResults extends HttpServlet {
 				String examresult = "NAME: "+name+"\n"+"PHYSICS: "+physics+"\n"+"CHEMISTRY: "+chemistry+"\n"+"MATHEMATICS: "+mathematics+"\n"+"ENGLISH: "+english+"\n"+"COMPUTERS: "+computers+"\n";
 						
 				System.out.println(examresult);
-				
+			   
 				request.setAttribute("examresult",examresult);
 				RequestDispatcher rd=request.getRequestDispatcher("/Home.jsp");            
 				rd.include(request, response);
@@ -121,8 +135,8 @@ public class GetResults extends HttpServlet {
 		    }
 			 }
 			 else {
-			
-						request.setAttribute("examresult","No Results found for the input"+studentid);
+				        studentid = EscapeUtils.escapeHtml(studentid);
+						request.setAttribute("examresult","No Results found for the input "+studentid);
 						RequestDispatcher rd=request.getRequestDispatcher("/Home.jsp");            
 						rd.include(request, response);
 			
@@ -141,8 +155,16 @@ public class GetResults extends HttpServlet {
             response.setContentType("text/plain");
             response.getOutputStream().print(stringWriter.toString());
         }
+			}
+			
+			 else {
+			    	request.setAttribute("examresult","Enter input is not a valid number");
+					RequestDispatcher rd=request.getRequestDispatcher("/Home.jsp");            
+					rd.include(request, response);
+			    }
 		}
-	 
+		
+		  }
 		//doGet(request, response);
 	}
 

@@ -1,10 +1,8 @@
-package com.examresults;
+package com.examresultsv2;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
 
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,8 +16,6 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet("/AdminLogin")
 public class AdminLogin extends HttpServlet {
-	
-	private static final Logger LOGGER = Logger.getLogger(Login.class.getName());
 	
 	Database db = new Database();
 	private static final long serialVersionUID = 1L;
@@ -48,16 +44,15 @@ public class AdminLogin extends HttpServlet {
 		
 		String username = request.getParameter("txtuser");
 		String password = request.getParameter("txtpwd");
-		LOGGER.log( Level.INFO, "Received credentials: "+username +":"+password );
-		
-
+		PrintWriter out = response.getWriter();
 		
 		if(db.openConnection()) {
 			
 		if(db.checkAdminLogin(username,password)) {
 			
 			HttpSession session=request.getSession();  
-	        session.setAttribute("userloggedin",username);  
+	        session.setAttribute("userloggedin",username); 
+	        session.setAttribute("role", "admin");
 			response.sendRedirect("admin/Dashboard.jsp");
 			return;
 

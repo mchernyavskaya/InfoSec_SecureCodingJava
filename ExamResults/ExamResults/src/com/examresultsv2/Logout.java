@@ -1,4 +1,4 @@
-package com.examresults;
+package com.examresultsv2;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -9,16 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class AdminLogout
+ * Servlet implementation class Logout
  */
-@WebServlet("/AdminLogout")
-public class AdminLogout extends HttpServlet {
+@WebServlet("/Logout")
+public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminLogout() {
+    public Logout() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,8 +31,7 @@ public class AdminLogout extends HttpServlet {
 		
 		HttpSession session=request.getSession();  
         session.invalidate(); 
-        response.sendRedirect("admin/index.jsp");
-        
+        response.sendRedirect("index.jsp");
 	}
 
 	/**

@@ -44,28 +44,36 @@
     
 </head>
 <body>
-    <!--  Check if a valid session exists  -->
+    <!--  Check if a valid session exists for admin-->
     
     <% if(session == null || session.getAttribute("userloggedin") == null){
     	response.sendRedirect("index.jsp");
-    } %>
+    	
+    } 
+    else{
+    
+    	if(session.getAttribute("role") != "admin")
+    		{
+    			response.sendRedirect("index.jsp");
+    		}
+    }%>
     <div class="formclass">
     
-    <form action="/ExamResults/AdminLogout" method="post">
+    <form action="/ExamResultsv2/AdminLogout" method="post">
     <input type="submit" name="btnLogout" class="input" value="Logout" style="width: 60px;margin-left: 300px;"/></input><br />
     
          <h2><label for="txtout" class="input">welcome Administrator</label></h2>  
     </form>   
-    <form action="/ExamResults/FileUploadHandler" method="post" enctype=multipart/form-data>
+    <form action="/ExamResultsv2/FileUploadHandler" method="post" enctype=multipart/form-data>
         <h2><input type="file" name="file" class="input"/></h2>
         <h2><input type="submit" value="upload" class="input"/></h2><br />
      </form>
-     <form action="/ExamResults/VerifyResults" method="post">       
+     <form action="/ExamResultsv2/VerifyResults" method="post">       
         <input type="submit" name="btnLogin" class="input" value="Verify Results"/></input><br /><br />
         
       
         <h3><label for="txtout" class="input">  <%
-String result=(String)request.getAttribute("examresult");  
+String result=(String)request.getAttribute("examresult"); 
 if(result!=null)
 out.println("<font color=white size=4px>"+result+"</font>");
 %>
@@ -75,7 +83,8 @@ out.println("<font color=white size=4px>"+result+"</font>");
    if ( uploadresult != null && (uploadresult).equals("Success")) { %>
    <script> alert("Successfully uploaded");
    window.location="admin/Dashboard.jsp"</script>
-<%  } 	
+<%  }  
+   
    %>
 
 </label></h3>  

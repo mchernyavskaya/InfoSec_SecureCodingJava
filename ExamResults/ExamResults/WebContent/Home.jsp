@@ -59,7 +59,7 @@
         <h2><label for="txtout" class="input">welcome <%=session.getAttribute("userloggedin")%></label></h2>  
         <input type="text" name="studentid" class="input" placeholder="Enter your student ID Here" style="width: 275px"></input><br /><br />
         
-        <input type="submit" name="btnSearch" class="input" value="Get Results"/></input><br /><br />
+        <input type="submit" name="btnLogin" class="input" value="Get Results"/></input><br /><br />
         
       
         <h3><label for="txtout" class="input"><%

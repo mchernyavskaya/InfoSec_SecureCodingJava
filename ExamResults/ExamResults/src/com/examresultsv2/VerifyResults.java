@@ -1,4 +1,4 @@
-package com.examresults;
+package com.examresultsv2;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -49,28 +51,27 @@ public class VerifyResults extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		HttpSession session = request.getSession(false);
+		  if (session == null) {
+				request.setAttribute("examresult","Invalid Session");
+				RequestDispatcher rd=request.getRequestDispatcher("/index.jsp");            
+				rd.include(request, response);
+		  }
+		  else {
 		String examresult = "RESULTS: ";
 		
 		try{
-			 File myClass = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
-			 
-			 int packageSubFolder = getClass().getPackage().getName().replaceAll("[^.]", "").length() + 2;
-			 
-			 for(int i=0; i<packageSubFolder; i++){
-		            myClass = myClass.getParentFile();
-		        }
-			 String webInfPath = getServletContext().getRealPath("/");
-			// String webInfPath = myClass.getAbsolutePath().replaceAll("%20", " ") + File.separator;
-			 System.out.println(webInfPath);
 		 
-			 File file = new File(webInfPath+"/admin/Results.xml");
+			 File file = new File("/home/infosec/examresults_uploads/Results.xml");
 			 System.out.println(file);
              DocumentBuilderFactory dBFactory = DocumentBuilderFactory.newInstance();
+             dBFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
              DocumentBuilder dBuilder = dBFactory.newDocumentBuilder();
              Document xmldoc = dBuilder.parse(file);
            
            
-           
+ 
         
            XPath xPath = XPathFactory.newInstance().newXPath();
            
@@ -125,6 +126,7 @@ public class VerifyResults extends HttpServlet {
                 response.getOutputStream().print(stringWriter.toString());
             }
 		//doGet(request, response);
+	}
 	}
 	
 }
