@@ -6,8 +6,8 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_DATABASE=users
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=secure_users
+      - MYSQL_ROOT_PASSWORD=toor
     volumes:
         - ./sql/db_users.sql:/docker-entrypoint-initdb.d/db_users.sql
 
