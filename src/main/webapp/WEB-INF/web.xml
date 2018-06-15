@@ -22,6 +22,27 @@
         <servlet-name>AdminLogin</servlet-name>
         <servlet-class>com.examresults.AdminLogin</servlet-class>
     </servlet>
+
+    <!--<session-config>-->
+        <!--<cookie-config>-->
+            <!--<secure>true</secure>-->
+        <!--</cookie-config>-->
+    <!--</session-config>-->
+
+    <!--<filter>-->
+        <!--<filter-name>httpHeaderSecurity</filter-name>-->
+        <!--<filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>-->
+        <!--<async-supported>true</async-supported>-->
+        <!--<init-param>-->
+            <!--<param-name>antiClickJackingOption</param-name>-->
+            <!--<param-value>DENY</param-value>-->
+        <!--</init-param>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>httpHeaderSecurity</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
     <error-page>
         <error-code>404</error-code>
         <location>/error.jsp</location>

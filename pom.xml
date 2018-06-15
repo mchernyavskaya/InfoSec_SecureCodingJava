@@ -19,6 +19,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
         <junit.platform.version>1.2.0</junit.platform.version>
+        <tomcat.version>7.0.88</tomcat.version>
     </properties>
 
     <dependencies>
@@ -43,7 +44,13 @@
             <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
-        
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-catalina -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-catalina</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -54,7 +61,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-coyote</artifactId>
-            <version>7.0.88</version>
+            <version>${tomcat.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
